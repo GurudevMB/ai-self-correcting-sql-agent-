@@ -2,7 +2,7 @@ from agent.llm import generate_plan
 from agent.tools import execute_sql
 
 
-def run_agent(question, max_retries=3):
+def run_agent(question, max_retries=3, initial_sql=None):
     """
     Generate SQL, execute it, and retry when SQL execution fails.
     """
@@ -10,7 +10,11 @@ def run_agent(question, max_retries=3):
     error = None
 
     for attempt in range(max_retries):
-        if error:
+
+        if attempt == 0 and initial_sql:
+            sql = initial_sql
+
+        elif error:
             prompt = f"""
 The previous SQL query failed.
 
@@ -23,6 +27,8 @@ Previous SQL error:
 Generate a corrected SQLite SQL query.
 Return ONLY the SQL query.
 """
+            sql = generate_plan(prompt)
+
         else:
             prompt = f"""
 Convert the following user question into a SQLite SQL query.
@@ -32,8 +38,9 @@ User question:
 
 Return ONLY the SQL query.
 """
+            sql = generate_plan(prompt)
 
-        sql = generate_plan(prompt)
+        print(f"Attempt {attempt + 1}: {sql}")
 
         result = execute_sql(sql)
 
@@ -44,6 +51,8 @@ Return ONLY the SQL query.
                 "result": result,
                 "attempts": attempt + 1
             }
+
+        print(f"SQL Error: {result['error']}")
 
         error = result["error"]
 
