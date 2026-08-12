@@ -1,46 +1,105 @@
 [
     {
-        "attempt": 1,
-        "question": "Show employee names",
-        "sql": "SELECT name, score, age FROM employees;",
-        "success": false,
-        "error": "no such column: score"
-    },
-    {
-        "attempt": 2,
-        "question": "Show employee names",
-        "sql": "```sql\nSELECT name FROM employees;\n```",
-        "success": false,
-        "error": "near \"```sql\nSELECT name FROM employees;\n```\": syntax error"
-    },
-    {
-        "attempt": 3,
-        "question": "Show employee names",
-        "sql": "SELECT name FROM employees;",
-        "success": true,
-        "result": {
-            "success": true,
-            "columns": [
-                "name"
-            ],
-            "rows": [
-                [
-                    "Arun"
-                ],
-                [
-                    "Priya"
-                ],
-                [
-                    "Karthik"
-                ],
-                [
-                    "Divya"
-                ],
-                [
-                    "Rahul"
+        "iteration": 1,
+        "perceive": {
+            "question": "Show employee names and their salaries",
+            "schema": {
+                "employees": [
+                    {
+                        "name": "id",
+                        "type": "INTEGER"
+                    },
+                    {
+                        "name": "name",
+                        "type": "TEXT"
+                    },
+                    {
+                        "name": "department",
+                        "type": "TEXT"
+                    },
+                    {
+                        "name": "salary",
+                        "type": "INTEGER"
+                    }
                 ]
-            ],
-            "row_count": 5
+            }
+        },
+        "plan": {
+            "sql": "SELECT name, score FROM employees;"
+        },
+        "act": {
+            "tool": "execute_sql",
+            "action": "Execute generated SQL"
+        },
+        "observe": {
+            "success": false,
+            "error": "no such column: score"
+        }
+    },
+    {
+        "iteration": 2,
+        "perceive": {
+            "question": "Show employee names and their salaries",
+            "schema": {
+                "employees": [
+                    {
+                        "name": "id",
+                        "type": "INTEGER"
+                    },
+                    {
+                        "name": "name",
+                        "type": "TEXT"
+                    },
+                    {
+                        "name": "department",
+                        "type": "TEXT"
+                    },
+                    {
+                        "name": "salary",
+                        "type": "INTEGER"
+                    }
+                ]
+            }
+        },
+        "plan": {
+            "sql": "SELECT name, salary FROM employees;"
+        },
+        "act": {
+            "tool": "execute_sql",
+            "action": "Execute generated SQL"
+        },
+        "observe": {
+            "success": true,
+            "result": {
+                "success": true,
+                "columns": [
+                    "name",
+                    "salary"
+                ],
+                "rows": [
+                    [
+                        "Arun",
+                        60000
+                    ],
+                    [
+                        "Priya",
+                        65000
+                    ],
+                    [
+                        "Karthik",
+                        50000
+                    ],
+                    [
+                        "Divya",
+                        45000
+                    ],
+                    [
+                        "Rahul",
+                        70000
+                    ]
+                ],
+                "row_count": 5
+            }
         }
     }
 ]
