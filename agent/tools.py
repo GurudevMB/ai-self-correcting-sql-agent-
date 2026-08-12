@@ -98,3 +98,4 @@ def execute_sql(query: str):
 
     finally:
         connection.close()
+        
